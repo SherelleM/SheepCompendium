@@ -89,3 +89,20 @@ def test_update_sheep():
     # the new sheep by ID.
     get_response = client.get("/sheep/6")
     assert get_response.json() == sheep_data_name
+
+# Define a test case function for reading all sheep
+def test_read_all_sheep():
+    # Send a GET request to the endpoint "/sheep"
+    response = client.get("/sheep")
+
+    # Assert that the response status code is 200 (OK)
+    assert response.status_code == 200
+
+    # Get data as a list
+    data = response.json()
+
+    # Assert that the data is a list
+    assert isinstance(data, list)
+
+    # Assert that the list has the expected length (6 items)
+    assert len(data) == 6
