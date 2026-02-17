@@ -39,3 +39,7 @@ def update_sheep(id: int, sheep: Sheep):
 
     # Return updated sheep
     return db.update_sheep(sheep)
+
+@app.get("/sheep/", response_model=list[Sheep], status_code=status.HTTP_200_OK)
+def get_all_sheep():
+   return db.get_all_sheep()
