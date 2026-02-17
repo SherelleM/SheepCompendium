@@ -62,3 +62,30 @@ def test_delete_sheep():
     # that the new sheep data cannot be retrieved
     get_response = client.get("/sheep/1")
     assert get_response.status_code == 404
+
+# Define a test case function for updating a sheep
+def test_update_sheep():
+    # Prepare updated sheep data in dictionary format
+    sheep_data_name = {
+        "id": 6,
+        "name": "Baby",
+        "breed": "Babydoll",
+        "sex": "ewe"
+    }
+
+    # Check the state before
+    current_response = client.get("/sheep/6")
+
+    # Send a PUT request to the endpoint "/sheep/6"
+    response = client.put("/sheep/6", json=sheep_data_name)
+
+    # Assert that the response status code is 200 (OK)
+    assert response.status_code == 200
+
+    # Assert that the response status JSON matches the new sheep data
+    assert response.json() == sheep_data_name
+
+    # Verify that the sheep was actually updated in the db by retrieving
+    # the new sheep by ID.
+    get_response = client.get("/sheep/6")
+    assert get_response.json() == sheep_data_name
