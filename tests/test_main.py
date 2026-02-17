@@ -7,7 +7,7 @@ from main import app
 # Create a TestClient instance for the FastAPI app
 client = TestClient(app)
 
-# Define a test function for reading a specfic sheep
+# Define a test function for reading a specific sheep
 def test_read_sheep():
     # Send a GET request to the endpoint "/sheep/1"
     response = client.get("/sheep/1")
@@ -22,3 +22,30 @@ def test_read_sheep():
         "breed": "Gotland",
         "sex": "ewe"
     }
+
+# Define a test case function for adding a new sheep
+def test_add_sheep():
+
+    # Prepare new sheep data in dictionary format
+    sheep_data_name = {
+        "id": 7,
+        "name": "Racey",
+        "breed": "F1",
+        "sex": "ram"
+    }
+
+    # Send a POST request to the endpoint "/sheep" with the new sheep data
+    response = client.post("/sheep", json=sheep_data_name)
+
+    # Assert that the response status code is 201 (Created)
+    assert response.status_code == 201
+
+    # Assert that the response status JSON matches the new sheep data
+    assert response.json() == sheep_data_name
+
+    # Verify that the sheep was actually added to the db by retrieving
+    # the new sheep by ID.
+    # Assert of new sheep data can be retrieved
+    get_response = client.get("/sheep/7")
+    assert get_response.status_code == 200
+    assert get_response.json() == sheep_data_name
