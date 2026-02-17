@@ -29,3 +29,12 @@ def delete_sheep(id: int):
 
     # Delete sheep with ID from db
     db.delete_sheep(id)
+
+    @app.put("/sheep/{id}", response_model=Sheep, status_code=status.HTTP_200_OK)
+    def update_sheep(id: int, sheep: Sheep):
+        # Checks if ID exists
+        if id not in db.data:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sheep not found")
+
+        # Return updated sheep
+        return db.update_sheep(sheep)
